@@ -2,8 +2,14 @@ package ru.josanr.integerdivision;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.josanr.integerdivision.division.DivisionStage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 
 class DivisionPrinterTest {
 
@@ -29,7 +35,16 @@ class DivisionPrinterTest {
                  5
             """;
 
-        var division = new LongDivision(19845, 16);
+        var division = mock(LongDivision.class);
+        when(division.getDividend()).thenReturn(19845);
+        when(division.getDivisor()).thenReturn(16);
+        when(division.getQuotient()).thenReturn(1240);
+        when(division.getRemainder()).thenReturn(5);
+        when(division.getStages()).thenReturn(List.of(
+            new DivisionStage(19, 16, 1),
+            new DivisionStage(38, 32, 2),
+            new DivisionStage(64, 64, 3)
+        ));
         assertEquals(expected, printer.print(division));
     }
 
@@ -45,7 +60,15 @@ class DivisionPrinterTest {
                7
             """;
 
-        var division = new LongDivision(487, 32);
+        var division = mock(LongDivision.class);
+        when(division.getDividend()).thenReturn(487);
+        when(division.getDivisor()).thenReturn(32);
+        when(division.getQuotient()).thenReturn(15);
+        when(division.getRemainder()).thenReturn(7);
+        when(division.getStages()).thenReturn(List.of(
+            new DivisionStage(48, 32, 1),
+            new DivisionStage(167, 160, 2)
+        ));
         assertEquals(expected, printer.print(division));
     }
 
@@ -67,7 +90,17 @@ class DivisionPrinterTest {
                     4
             """;
 
-        var division = new LongDivision(10240012, 8);
+        var division = mock(LongDivision.class);
+        when(division.getDividend()).thenReturn(10240012);
+        when(division.getDivisor()).thenReturn(8);
+        when(division.getQuotient()).thenReturn(1280001);
+        when(division.getRemainder()).thenReturn(4);
+        when(division.getStages()).thenReturn(List.of(
+            new DivisionStage(10, 8, 1),
+            new DivisionStage(22, 16, 2),
+            new DivisionStage(64, 64, 3),
+            new DivisionStage(12, 8, 7)
+        ));
         assertEquals(expected, printer.print(division));
     }
 }

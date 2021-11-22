@@ -1,7 +1,11 @@
 package ru.josanr.integerdivision;
 
+import ru.josanr.integerdivision.division.LongDivisionImpl;
+
 public class Main {
+
     public static void main(String[] args) {
+
         if (args.length < 2) {
             System.out.println("You must enter dividend and divisor");
         }
@@ -11,9 +15,9 @@ public class Main {
             int divider = Integer.parseInt(args[1]);
             var printer = new DivisionPrinter();
 
-            String formattedOutput = printer.print(new LongDivision(dividend, divider));
+            String formattedOutput = printer.print(new LongDivisionImpl(dividend, divider));
             System.out.println(formattedOutput);
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Argument not a number: " + e.getMessage());
         }
     }

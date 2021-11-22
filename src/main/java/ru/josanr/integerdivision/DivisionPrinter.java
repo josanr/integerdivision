@@ -1,11 +1,13 @@
 package ru.josanr.integerdivision;
 
+import ru.josanr.integerdivision.division.DivisionStage;
+
 public class DivisionPrinter {
 
     private static final int START_OFFSET = 1;
     private static final int MINUS_SIGN_OFFSET = 1;
 
-    public String print(LongDivisionInterface division) {
+    public String print(LongDivision division) {
         var output = new StringBuilder();
 
         int dividend = division.getDividend();
@@ -39,10 +41,10 @@ public class DivisionPrinter {
             .append("\n")
         ;
 
-        for(var index = 1; index < stages.size(); index++) {
+        for (var index = 1; index < stages.size(); index++) {
             var stage = stages.get(index);
             var offsetFirst = stage.offset() - calculateDigitCount(stage.firstNumber()) + START_OFFSET;
-            var offsetSecond = stage.offset() - calculateDigitCount(stage.secondNumber())  + START_OFFSET + MINUS_SIGN_OFFSET;
+            var offsetSecond = stage.offset() - calculateDigitCount(stage.secondNumber()) + START_OFFSET + MINUS_SIGN_OFFSET;
             output.append(" ".repeat(offsetFirst))
                 .append("_")
                 .append(stage.firstNumber()).append("\n")
@@ -58,13 +60,12 @@ public class DivisionPrinter {
             .append("\n");
 
 
-
         return output.toString();
     }
 
     private int calculateDigitCount(int number) {
 
-        if(number == 0) {
+        if (number == 0) {
             return 1;
         }
         return (int) Math.log10(number) + 1;
