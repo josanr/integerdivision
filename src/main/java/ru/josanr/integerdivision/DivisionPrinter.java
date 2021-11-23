@@ -4,15 +4,17 @@ import ru.josanr.integerdivision.division.DivisionStage;
 
 public class DivisionPrinter {
 
-    private static final int START_OFFSET = 1;
     private static final int MINUS_SIGN_OFFSET = 1;
 
     public String print(LongDivision division) {
         var output = new StringBuilder();
-
+        int leftOffset = 1;
         int dividend = division.getDividend();
         int divisor = division.getDivisor();
-        int dividendDigitCount = calculateDigitCount(dividend);
+        int dividendDigitCount = calculateDigitCount(Math.abs(dividend));
+        if (dividend < 0) {
+            leftOffset = 2;
+        }
         var stages = division.getStages();
         output.append("_").append(dividend)
             .append("|")
@@ -20,11 +22,11 @@ public class DivisionPrinter {
             .append("\n");
 
         DivisionStage firstStage = stages.get(0);
-        int firstStageSecondDigitCount = calculateDigitCount(firstStage.secondNumber());
-        int firstStageFirstDigitCount = calculateDigitCount(firstStage.firstNumber());
-        int divisorDigitCount = calculateDigitCount(divisor);
+        int firstStageSecondDigitCount = calculateDigitCount(Math.abs(firstStage.secondNumber()));
+        int firstStageFirstDigitCount = calculateDigitCount(Math.abs(firstStage.firstNumber()));
+        int divisorDigitCount = calculateDigitCount(Math.abs(divisor));
 
-        output.append(" ")
+        output.append(" ".repeat(leftOffset))
             .append(" ".repeat(firstStageFirstDigitCount - firstStageSecondDigitCount))
             .append(firstStage.secondNumber())
             .append(" ".repeat(dividendDigitCount - firstStageSecondDigitCount))
@@ -32,7 +34,7 @@ public class DivisionPrinter {
             .append("-".repeat(divisorDigitCount))
             .append("\n");
 
-        output.append(" ")
+        output.append(" ".repeat(leftOffset))
             .append(" ".repeat(firstStageFirstDigitCount - firstStageSecondDigitCount))
             .append("-".repeat(firstStageSecondDigitCount))
             .append(" ".repeat(dividendDigitCount - firstStageSecondDigitCount))
@@ -43,8 +45,8 @@ public class DivisionPrinter {
 
         for (var index = 1; index < stages.size(); index++) {
             var stage = stages.get(index);
-            var offsetFirst = stage.offset() - calculateDigitCount(stage.firstNumber()) + START_OFFSET;
-            var offsetSecond = stage.offset() - calculateDigitCount(stage.secondNumber()) + START_OFFSET + MINUS_SIGN_OFFSET;
+            var offsetFirst = stage.offset() - calculateDigitCount(stage.firstNumber()) + leftOffset;
+            var offsetSecond = stage.offset() - calculateDigitCount(stage.secondNumber()) + leftOffset + MINUS_SIGN_OFFSET;
             output.append(" ".repeat(offsetFirst))
                 .append("_")
                 .append(stage.firstNumber()).append("\n")
@@ -54,8 +56,13 @@ public class DivisionPrinter {
                 .append("-".repeat(calculateDigitCount(stage.firstNumber()))).append("\n");
         }
 
-        output.append(" ")
-            .append(" ".repeat(dividendDigitCount - calculateDigitCount(division.getRemainder())))
+        int rightOffset = 0;
+        if (division.getRemainder() < 0) {
+            rightOffset = 1;
+        }
+        int repeatCount = dividendDigitCount - calculateDigitCount(Math.abs(division.getRemainder())) - rightOffset;
+        output.append(" ".repeat(leftOffset))
+            .append(" ".repeat(repeatCount))
             .append(division.getRemainder())
             .append("\n");
 

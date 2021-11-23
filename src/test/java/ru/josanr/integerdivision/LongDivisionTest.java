@@ -26,8 +26,8 @@ class LongDivisionTest {
             Arguments.of(99, 10, 9, 9),
             Arguments.of(99, 9, 11, 0),
             Arguments.of(-99, -9, 11, 0),
-            Arguments.of(16, -2, 8, 0),
-            Arguments.of(-35, 5, 7, 0)
+            Arguments.of(16, -2, -8, 0),
+            Arguments.of(-35, 5, -7, 0)
         );
     }
 

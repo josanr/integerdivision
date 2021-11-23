@@ -15,14 +15,14 @@ public class LongDivisionImpl implements LongDivision {
 
     public LongDivisionImpl(int dividend, int divisor) {
 
-        this.dividend = Math.abs(dividend);
-        this.divisor = Math.abs(divisor);
+        this.dividend = dividend;
+        this.divisor = divisor;
 
         if (this.divisor == 0) {
             throw new IllegalArgumentException("Divisor can't be 0");
         }
 
-        if (this.dividend < this.divisor) {
+        if (Math.abs(this.dividend) < Math.abs(this.divisor)) {
             throw new IllegalArgumentException("Dividend can't be less than divisor");
         }
 
@@ -58,19 +58,19 @@ public class LongDivisionImpl implements LongDivision {
     }
 
     private void divide() {
-        String[] digits = String.valueOf(dividend).split("");
+        String[] digits = String.valueOf(Math.abs(dividend)).split("");
         StringBuilder remainderString = new StringBuilder();
         int dividedPart;
         int partResult;
         int mod;
-
+        int positiveDivisor = Math.abs(this.divisor);
         for (int index = 0; index < digits.length; index++) {
             remainderString.append(digits[index]);
             dividedPart = Integer.parseInt(remainderString.toString());
 
-            if (dividedPart >= divisor) {
-                mod = dividedPart % divisor;
-                partResult = dividedPart / divisor * divisor;
+            if (dividedPart >= positiveDivisor) {
+                mod = dividedPart % positiveDivisor;
+                partResult = dividedPart / positiveDivisor * positiveDivisor;
                 stageList.add(new DivisionStage(dividedPart, partResult, index));
                 remainderString.replace(0, remainderString.length(), Integer.toString(mod));
             }

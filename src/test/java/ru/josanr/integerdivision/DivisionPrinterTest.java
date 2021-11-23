@@ -103,4 +103,55 @@ class DivisionPrinterTest {
         ));
         assertEquals(expected, printer.print(division));
     }
+
+    @Test
+    void print_shouldAlignCorrectly_NegativeDividend() {
+        String expected = """
+            _-845|51
+              51 |--
+              -- |-16
+             _335
+              306
+              ---
+              -29
+            """;
+
+        var division = mock(LongDivision.class);
+        when(division.getDividend()).thenReturn(-845);
+        when(division.getDivisor()).thenReturn(51);
+        when(division.getQuotient()).thenReturn(-16);
+        when(division.getRemainder()).thenReturn(-29);
+        when(division.getStages()).thenReturn(List.of(
+            new DivisionStage(84, 51, 1),
+            new DivisionStage(335, 306, 2)
+        ));
+        String print = printer.print(division);
+        assertEquals(expected, print);
+    }
+
+
+    @Test
+    void print_shouldAlignCorrectly_NegativeDivider() {
+        String expected = """
+            _845|-51
+             51 |--
+             -- |-16
+            _335
+             306
+             ---
+              29
+            """;
+
+        var division = mock(LongDivision.class);
+        when(division.getDividend()).thenReturn(845);
+        when(division.getDivisor()).thenReturn(-51);
+        when(division.getQuotient()).thenReturn(-16);
+        when(division.getRemainder()).thenReturn(29);
+        when(division.getStages()).thenReturn(List.of(
+            new DivisionStage(84, 51, 1),
+            new DivisionStage(335, 306, 2)
+        ));
+        String print = printer.print(division);
+        assertEquals(expected, print);
+    }
 }
